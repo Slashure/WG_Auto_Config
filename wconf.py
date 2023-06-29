@@ -1,12 +1,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Wireguard configurator
-Auteur: Kasper van der Mark
+Wireguard config
+Auteur: Victor Liu
 Datum: 30-03-2023
-Versie: 2.0
+Versie: 4.0
 
-Dit programma creëert een Wireguard-configuratie en start de Wireguard-service.
-Dit programma werkt alleen op linux, door de path en de sudo commando's.
-VERANDER SLEUTELS!!
 
 Vereisten:
 pip install python-wireguard
@@ -25,14 +22,15 @@ from python_wireguard import Client, ServerConnection, Key
 from gkey import gkey
 import subprocess
 
-# Definieer variabelen
+# Definieer variabelenpyth
 local_ip = "10.10.10.2/24"
-client_key_str, server_key_str = gkey('/home/user/Desktop/')
+client_key_str, server_key_str = gkey('/home/vicc')
+print("dit ide clientkey", client_key_str)
 client_key = Key(client_key_str.strip())
 print(client_key)
 server_key = Key(server_key_str.strip())
 print(server_key)
-endpoint = "80.80.80.1"
+endpoint = "80.80.80.2"
 port = 51820
 
 # Stop en verwijder bestaande WireGuard-configuratie
@@ -56,7 +54,7 @@ Endpoint = {endpoint}:{port}
 '''
 
 # Schrijf configuratiebestand
-with open('/etc/wireguard/wg0', 'w') as f:
+with open('/etc/wireguard/wg0.conf', 'w') as f:
     f.write(config)
 
 # Start WireGuard en controleer verbinding
@@ -68,4 +66,3 @@ try:
     subprocess.run('wg')
 except:
     print("WireGuard-verbinding is mislukt.")
-    
