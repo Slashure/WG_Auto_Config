@@ -1,12 +1,16 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-get_keys functie
+Keygen/Keygetter
 Auteur: Victor Liu
-Datum: 29-06-2023
-Versie: 3.0
+Datum: 30-03-2023
+Versie: 5.0
 
-Dit programma is een kleine functie die keys ophaalt uit een bestand.
-de functie is bedoeld om in een groter programma gebruikt te worden,
-voor een automatische wireguard configurator.
+
+Vereisten:
+pip install python-wireguard
+
+Documentatie:
+Wireguard-pakket: https://pypi.org/project/python-wireguard/
+Wireguard:        https://www.wireguard.com/embedding/
 
 Disclaimer:
 Deze configurator is mede mogelijk gemaakt door ChatGPT, een AI-taalmodel getraind door OpenAI.
@@ -18,7 +22,7 @@ import subprocess
 
 def main():
     print('dit is de gkey functie script')
-    keygen()
+    
 
 
     #file_path = input('wat is het pad naar de keys: ')
@@ -35,6 +39,7 @@ def gkey(file_path):
     output: twee strings met de keys
     gebruik: cient, server = get_keys(file_path)
     """
+    keygen()
     while True:
         try:
             key_file_path = file_path + '/publickey' #het is van belang dat je van meerdere variabelen 1 variabel maakt
@@ -43,8 +48,9 @@ def gkey(file_path):
                 client = file.read()
             with open(file_path + '/privatekey', 'r') as file:
                 server = file.read()
+            print("gaat dit goed?:",client, server)
             return client, server
-            print(test)
+            
         except FileNotFoundError as error:
             print(error)
             print("Sleutel niet gevonden. Opnieuw proberen in 5 seconden...")
@@ -77,6 +83,10 @@ def test():
     while True:
         print('hallo wereld!')
         return 'hallo wereld'
+
+if __name__=="__main__":
+     main()
+
 
 if __name__=="__main__":
      main()
