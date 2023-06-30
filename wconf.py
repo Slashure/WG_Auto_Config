@@ -1,3 +1,18 @@
+""""""""""
+Wireguard config
+Auteur: Victor Liu
+Datum: 30-06-2023
+Versie: 6.0
+
+
+Vereisten:
+pip install python-wireguard
+
+Documentatie:
+Wireguard-pakket: https://pypi.org/project/python-wireguard/
+Wireguard:        https://www.wireguard.com/embedding/
+
+"""""""""
 # Importeer vereiste modules
 from python_wireguard import Client, ServerConnection, Key
 from gkey import gkey
