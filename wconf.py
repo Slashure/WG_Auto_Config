@@ -1,22 +1,3 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Wireguard config
-Auteur: Victor Liu
-Datum: 30-03-2023
-Versie: 4.0
-
-
-Vereisten:
-pip install python-wireguard
-
-Documentatie:
-Wireguard-pakket: https://pypi.org/project/python-wireguard/
-Wireguard:        https://www.wireguard.com/embedding/
-
-Disclaimer:
-Deze configurator is mede mogelijk gemaakt door ChatGPT, een AI-taalmodel getraind door OpenAI.
-Voor veilig gebruik van dit Python-script dienen de sleutels te worden aangepast en vertrouwelijk te blijven.
-Ik aanvaard geen enkele verantwoordelijkheid voor eventuele schade die kan ontstaan door het gebruik van dit script.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # Importeer vereiste modules
 from python_wireguard import Client, ServerConnection, Key
 from gkey import gkey
@@ -25,12 +6,11 @@ import subprocess
 # Definieer variabelenpyth
 local_ip = "10.10.10.2/24"
 client_key_str, server_key_str = gkey('/home/vicc')
-print("dit ide clientkey", client_key_str)
 client_key = Key(client_key_str.strip())
 print(client_key)
 server_key = Key(server_key_str.strip())
 print(server_key)
-endpoint = "80.80.80.2"
+endpoint = "80.80.80.1"
 port = 51820
 
 # Stop en verwijder bestaande WireGuard-configuratie
@@ -45,6 +25,7 @@ client.set_server(server_conn)
 # Maak configuratiebestand
 config = f'''[Interface]
 PrivateKey = {client_key}
+ListenPort = {port}
 Address = {local_ip}
 
 [Peer]
