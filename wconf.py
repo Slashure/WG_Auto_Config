@@ -1,46 +1,44 @@
-""""""""""
+""""
+Wcon.py
 Wireguard config
 Auteur: Victor Liu
-Datum: 30-06-2023
-Versie: 6.0
+Datum: 30-03-2023
+Versie: 5.0
 
+Een script dat automatisch een configuratie maakt. Het is wel van belang dat de gkey.py bestand erbij gebruikt moet worden om keys te generen en in de config te doen
 
-Vereisten:
-pip install python-wireguard
-
-Documentatie:
-Wireguard-pakket: https://pypi.org/project/python-wireguard/
-Wireguard:        https://www.wireguard.com/embedding/
-
-"""""""""
-# Importeer vereiste modules
+""""
+#modules
 from python_wireguard import Client, ServerConnection, Key
 from gkey import gkey
 import subprocess
 
-# Definieer variabelenpyth
-local_ip = "10.10.10.2/24"
-client_key_str, server_key_str = gkey('/home/vicc')
+#Variablelen
+#Client key en serverkey worden uit de script van gkey gehaald
+client_key_str, server_key_str = gkey('/home/vicc') #pad waar de keys op dat moment zijn
+
+#interface variabelen
 client_key = Key(client_key_str.strip())
-print(client_key)
+listen_port= 51820
+local_ip = "10.10.10.2/24"
+
+#peer variabelen
 server_key = Key(server_key_str.strip())
-print(server_key)
-endpoint = "80.80.80.1"
+endpoint = "80.80.80.2"
 port = 51820
 
-# Stop en verwijder bestaande WireGuard-configuratie
-subprocess.run(['sudo', 'wg-quick', 'down', 'wg0'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-subprocess.run(['sudo', 'rm', '/etc/wireguard/wg0.conf'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+subprocess.run(['sudo', 'wg-quick', 'down', 'wg0'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) #stop huidige wireguard interface
+subprocess.run(['sudo', 'rm', '/etc/wireguard/wg0.conf'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) #Verwijder config file
 
 # Maak WireGuard-client- en server-verbindingobjecten
 client = Client('wg0', client_key, local_ip)
 server_conn = ServerConnection(server_key, endpoint, port)
 client.set_server(server_conn)
 
-# Maak configuratiebestand
+# Maak een configuratiebestand
 config = f'''[Interface]
 PrivateKey = {client_key}
-ListenPort = {port}
+ListenPort = {listen_port}
 Address = {local_ip}
 
 [Peer]
@@ -49,7 +47,7 @@ AllowedIPs = 10.10.10.0/24, 192.168.0.0/16
 Endpoint = {endpoint}:{port}
 '''
 
-# Schrijf configuratiebestand
+# Schrijf een configuratiebestand
 with open('/etc/wireguard/wg0.conf', 'w') as f:
     f.write(config)
 
